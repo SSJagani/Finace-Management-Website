@@ -1,0 +1,166 @@
+  {% extends 'agent_panel/subadmin/base.html' %}
+{% load static %}
+
+{% block title %}
+<title> Customer List </title>
+{% endblock %}
+
+{% block body %}
+<style type="text/css">
+  .bg-primary {
+      background-color: #172b4d!important;
+  }
+</style>
+	 <!-- Header -->
+   {% if agent_profile %}
+    <div class="header pb-6 d-flex align-items-center" style="min-height: 500px; background-image: url({% static 'assets/img/theme/profile-cover.jpg' %}); background-size: cover; background-position: center top;">
+      <!-- Mask -->
+      <span class="mask bg-gradient-default opacity-8"></span>
+      <!-- Header container -->
+      <div class="container-fluid d-flex align-items-center">
+        <div class="row">
+          <div class="col-lg-7 col-md-10">
+            <h1 class="display-2 text-white">Hello {{ agent_profile.full_name }}</h1>
+            <p class="text-white mt-0 mb-5">This is your profile page. You can see the progress you've made with your work and manage your projects or assigned tasks</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-header">
+              <div class="row align-items-center">
+                <div class="col-12">
+                  <h3 class="mb-0">Edit profile </h3>
+                </div>
+              </div>
+                 {% if messages %}
+                  {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert">
+                        <strong>Message:</strong> {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+            </div>
+            <form method="post" action="/agent_ksf/profile" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="card-body">
+                  <h6 class="heading-small text-muted mb-4">User information</h6>
+                  <div class="pl-lg-4">
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label class="form-control-label" for="agent_number">Agent Number</label>
+                          <input type="text" id="agent_number" name="agent_number" class="form-control" placeholder="Agent0000123" value="{{ agent_profile.agent_no }}" readonly="">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label class="form-control-label" for="full_name">Full Name</label>
+                          <input type="text" id="full_name" name="full_name" class="form-control" placeholder="Full Name" value="{{ agent_profile.full_name }}">
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label class="form-control-label" for="email_address">Email address</label>
+                          <input type="email" id="email_address" name="email_address" class="form-control" placeholder="jesse@example.com" value="{{ agent_profile.email_address }}" readonly=" 
+                          ">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label>Customer Gender<span style="color: red;"> *</span></label>
+                          <br>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="agent_gender" id="agent_gender_male" value="male" {% if agent_profile.agent_gender == 'male' %} checked='checked' {% endif %}>
+                            <label class="form-check-label" for="agent_gender_male">Male</label>
+                          </div>
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="agent_gender" id="agent_gender_female" value="female"  {% if agent_profile.agent_gender == 'female' %} checked='checked' {% endif %}>
+                            <label class="form-check-label" for="agent_gender_female">Female</label>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label class="form-control-label" for="input-email">Date Of Birth</label>
+                          <div class='input-group date' id='datetimepicker1'>
+                            <input type='text' class="form-control" name="agent_dob" id="agent_dob" value="{{ agent_profile.agent_dob|date:'Y-m-d' }}" />
+                            <span class="input-group-addon input-group-append" >
+                              <button class="btn btn-outline-primary" type="button" id="button-addon2"> <span class="fa fa-calendar"></span></button>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr class="my-4" />
+                  <!-- Address -->
+                  <h6 class="heading-small text-muted mb-4">Contact information</h6>
+                  <div class="pl-lg-4">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="form-control-label" for="agent_address">Address</label>
+                          <input id="agent_address" name="agent_address" class="form-control" placeholder="Home Address" value="{{ agent_profile.agent_address }}" type="text">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label class="form-control-label" for="agent_photo_view">Agent Photo</label><br>
+                          <img src="/media/{{ agent_profile.profile_photo }}" class="img-thumbnail mx-2 rounded" alt="Agent_Idetity_Doc" id="agent_photo_view" style="width:100%; max-width:300px;">
+                        </div>
+                      </div>
+                      <div class="col-lg-6">
+                        <div class="form-group">
+                          <label class="form-control-label" for="agent_identity_view">Agent Identity Document(Aadhar/Pan Card)</label><br>
+                          <img src="/media/{{ agent_profile.identity_doc }}" class="img-thumbnail mx-2 rounded" alt="Agent_Idetity_Doc" id="agent_identity_view" style="width:100%; max-width:300px;">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="card-footer text-right">
+                <button type="submit" class="btn btn-outline-primary">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  // <!---------- Datepicker start -------------->
+    $('#datetimepicker1').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate: moment().subtract(80, "years"),
+        // maxDate: moment().subtract(18, "years"),
+        icons: {
+          date: "fa fa-calendar-day",
+          up: "fa fa-chevron-up",
+          down: "fa fa-chevron-down",
+          previous: 'fa fa-chevron-left',
+          next: 'fa fa-chevron-right',
+          today: 'fa fa-screenshot',
+          clear: 'fa fa-trash',
+          close: 'fa fa-remove'
+        }
+    });
+// <!---------- Datepicker End -------------->
+</script>
+{% endblock %}

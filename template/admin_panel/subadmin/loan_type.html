@@ -1,0 +1,211 @@
+{% extends 'admin_panel/subadmin/base.html' %}
+
+{% block title %}
+<title>Loan List</title>
+{% endblock %}
+
+{% block body %}
+<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1 class="m-0 text-dark">Loan Type</h1>
+	          </div>
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="/admin_ksf/dashboard">Home</a></li>
+	              <li class="breadcrumb-item active">Loan Type</li>
+	            </ol>
+	          </div>
+	        </div>
+	      </div>
+	    </section>
+
+	     <!-- Main content -->
+	    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header" style="background-color: #007bff; color:white;">
+                <h3 class="card-title">Loan Type List</h3>
+              </div>
+              <div>
+                {% if messages %}
+		          {% for message in messages %}
+				    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert">
+				        <strong>Message:</strong> {{ message }}
+				        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				            <span aria-hidden="true">&times;</span>
+				        </button>
+				    </div>
+				    {% endfor %}
+		      {% endif %}
+		      </div>
+
+		      <!-- /.card-header -->
+              <div class="card-body">
+              		<div>
+                		<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#Add-Loan-Type-Model">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                    Loan Type
+                                </button>
+                	</div>
+                	<br>
+                	<br>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped" id="example1">
+                  <thead>
+                    <tr>
+                      <th>Loan Name</th>
+                      <th>Create Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {% if loantypes %}
+                      {% for loantype in loantypes %}
+                        <tr>
+                          <td>{{ loantype.loan_type_name }}</td>
+                          <td>{{ loantype.create_date }}</td>
+                          <td>
+                          	<center>
+                          		<!-- <button type="submit" class="btn" onClick="Edit_Agent({{ Agent.Agent_id }})"data-toggle="modal" data-target="#update_">
+                                    <i class="fa fa-eye"></i>
+                                </button> -->
+                                <button type="submit" class="btn btn-primary" onClick="Edit_Loan({{ loantype.loan_type_id }})"> <!-- data-toggle="modal" data-target="#Edit-Agent-Model" -->
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button type="submit" class="btn btn-danger" onClick="Delete_Loan({{ loantype.loan_type_id }})"data-toggle="modal" data-target="#Delete-Loan-Model">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                          	</center>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    {% endif %}
+                  </tbody>
+                </table><br>
+                </div>
+              </div>
+		  </div>
+		</div>
+	</div>
+</div>
+<!--add Loan Modal start -->
+  <form id="add_loan_type" method="post" action="/admin_ksf/add_loan_type" enctype="multipart/form-data" onsubmit="return check_loan_type()">
+      		{% csrf_token %}
+			<div class="modal fade" id="Add-Loan-Type-Model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLongTitle">Add Loan Type</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			      	<div class="form-group">
+                <input type="hidden" name="loan_type_id" id="loan_type_id">
+			      		<label for="branch_name">Loan Type Name<span style="color: red;"> *</span></label>
+			      		<input type="text" name="loan_type_name" id="loan_type_name" class="form-control">
+                <small id="error_loan_type" class="form-text text-muted" style="font-weight: bold; display: none;">
+                <span style="color: red;"> This Loan Type Already Existes.</span></small>
+			      	</div>
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="submit" class="btn btn-primary">Save changes</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</form>
+</section>
+</div>
+{% endblock %}
+
+
+{% block jquery %}
+<script type="text/javascript">
+  $(document).ready(function(){
+    setTimeout(function() {
+        $(".alert-dismissible").fadeOut('fast');
+    }, 5000);
+  });
+  
+	function check_loan_type() {
+		// body...
+    var loan_type_id = $('#loan_type_id').val()
+    var loan_type_name = $('#loan_type_name').val()
+    var return_value = false;
+    $.ajax({
+      url: '/admin_ksf/check_loan_type',
+      type:'POST',
+      headers:{
+        'X-CSRFToken': csrftoken,
+      },
+      data: {'loan_type_id':loan_type_id,'loan_type_name':loan_type_name},
+      dataType: 'json',
+      async:false,
+      success: function (data) {
+        if(data == true){
+          return_value = true
+        }
+        else{
+          $.notiny({ text: 'This Loan Type Already Existes.', position: 'right-top'});
+          $('.notiny-theme-dark').css('background-color','red')
+          $('.notiny-theme-dark').css('font-weight','20px')
+          $('#error_loan_type').css('display','block');
+          return_value = false
+        }
+      }
+    })
+    return return_value
+	}
+
+  function Edit_Loan(loan_type_id){
+    if(loan_type_id){
+      $.ajax({
+      url: '/admin_ksf/get_loan_type',
+      type:'POST',
+      headers:{
+        'X-CSRFToken': csrftoken,
+      },
+      data: {'loan_type_id':loan_type_id},
+      dataType: 'json',
+      async:false,
+      success: function (data) {
+        console.log(data)
+        if(data != true){
+           $('#loan_type_id').val(data[0]['loan_type_id']);
+           $('#loan_type_name').val(data[0]['loan_type_name']);
+           $('#Add-Loan-Type-Model').modal('show');
+         }
+         else{
+          alert("Data Was Not Found.")
+         }
+      }, 
+      beforeSend: function(){
+            // swal('Please Wait !','Data Uploading..');
+          window.swal({
+          title: "Checking...",
+          text: "Please wait",
+          imageUrl: "/static/admin_panel/dist/img/AdorableMajesticJellyfish-max-14mb.gif",
+          showConfirmButton: false,
+          allowOutsideClick: false
+        });
+        },
+        complete: function(){
+            swal.close()
+        }
+    })
+    }
+  }
+  
+</script>
+{% endblock %}

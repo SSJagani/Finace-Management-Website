@@ -1,0 +1,656 @@
+{% extends 'agent_panel/subadmin/base.html' %}
+{% load static %}
+
+{% block title %}
+<title> Customer List </title>
+{% endblock %}
+
+{% block body %}
+	    <!-- Header -->
+    <div class="header bg-primary pb-6">
+      <div class="container-fluid">
+        <div class="header-body">
+          <div class="row align-items-center py-4">
+            <div class="col-lg-6 col-7">
+              <h6 class="h2 text-white d-inline-block mb-0">Customers</h6>
+              <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                  <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                  <li class="breadcrumb-item active"><a href="#">Customers</a></li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+      <!-- Table -->
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <!-- Card header -->
+            <div class="card-header">
+              <h3 class="mb-0">Customers</h3>
+              <button type="button" class="btn btn-primary float-right mb-0" data-toggle="modal" data-target="#Add-Customer-Model">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                    Add Customer
+                                </button>
+            </div>
+            <div class="table-responsive py-4">
+              <table class="table table-flush" id="datatable-basic">
+                <thead class="thead-light">
+                    <tr>
+                      <th>Account No.</th>
+                      <th>Customer No.</th>
+                      <th>Profile Photo</th>
+                      <th>Full Name</th>
+                      <th>Email</th>
+                      <th>Contact No</th>
+                      <th>Gender</th>
+                      <th>Date Of Birth</th>
+                      <th>Maiden Name</th>
+                      <th>Religion</th>
+                      <th>Cast</th>
+                      <th>Education</th>
+                      <th>Occupation</th>
+                      <th>Marial Status</th>
+                      <th>Permanent Address</th>
+                      <th>Signature</th>
+                      <th>Aadhar Card Number</th>
+                      <th>Aadhar Card Photo</th>
+                      <th>Pan Card Number</th>
+                      <th>Pan Card Photo</th>
+                      <th>Account Type</th>
+                      <th>Branch Name</th>
+                      <th>Account Operated</th>
+                      <th>Join Holder Name</th>
+                      <th>Create Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% if customer_list %}
+                      {% for customer in customer_list %}
+                        <tr id="customer-{{customer.customer_id}}">
+                          <td>{{ customer.account_no }}</td>
+                          <td>{{ customer.customer_no }}</td>
+                          <td>
+                          	{% if customer.customer_profile_photo %}
+                          		<center>
+                            		<img src="/media/{{ customer.customer_profile_photo }}" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% else %}
+                          		<center>
+                            		<img src="/media/customer_profile/no_customer_image.png" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% endif %}
+                          </td>
+                          <td>{{ customer.full_name }}</td>
+                          <td>{{ customer.customer_email }}</td>
+                          <td>{{ customer.customer_contact_no }}</td>
+                          <td>{{ customer.customer_gender }}</td>
+                          <td>{{ customer.customer_dob }}</td>
+                          <td>{{ customer.maiden_name }}</td>
+                          <td>{{ customer.religion }}</td>
+                          <td>{{ customer.cast }}</td>
+                          <td>{{ customer.education }}</td>
+                          {% if 'other' == customer.occupation %}
+                          	<td>{{ customer.other_occupation }}</td>
+                          {% else %}
+                          	<td>{{ customer.occupation }}</td>
+                          {% endif %}
+                          <td>{{ customer.marial_status }}</td>
+                          <td>{{ customer.permenant_address }}</td>
+                          <td>
+                          	{% if customer.customer_sign_image %}
+                          		<center>
+                            		<img src="/media/{{ customer.customer_sign_image }}" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% else %}
+                          		<center>
+                            		<img src="/media/customer_profile/no_customer_image.png" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% endif %}
+                          </td>
+                          <td>{{ customer.customer_aadharcard_no }}</td>
+                          <td>
+                          	{% if customer.customer_aadharcard_image %}
+                          		<center>
+                            		<img src="/media/{{ customer.customer_aadharcard_image }}" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% else %}
+                          		<center>
+                            		<img src="/media/customer_profile/no_customer_image.png" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% endif %}
+                          </td>
+                          <td>{{ customer.customer_pancard_no }}</td>
+                          <td>
+                          	{% if customer.customer_pancard_image %}
+                          		<center>
+                            		<img src="/media/{{ customer.customer_pancard_image }}" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% else %}
+                          		<center>
+                            		<img src="/media/customer_profile/no_customer_image.png" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% endif %}
+                          </td>
+                          <td>{{ customer.account_type }}</td>
+                          <td>{{ customer.branch_name }}</td>
+                          <td>{{ customer.account_operter }}</td>
+                          <td>{{ customer.joint_holder_name }}</td>
+                          <td>{{ customer.create_date }}</td>
+                          <td>
+                          	<center>
+                          		<!-- <button type="submit" class="btn" onClick="Edit_Agent({{ Agent.Agent_id }})"data-toggle="modal" data-target="#update_">
+                                    <i class="fa fa-eye"></i>
+                                </button> -->
+                                <button type="submit" class="btn btn-primary" onClick="Edit_Customer({{ customer.customer_id }})"> <!-- data-toggle="modal" data-target="#Edit-Agent-Model" -->
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button type="submit" class="btn btn-danger" onClick="Delete_Customer({{ customer.customer_id }})"data-toggle="modal" data-target="#Delete-Customer-Model">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                          	</center>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    {% endif %}
+                  </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!--add Customer Modal start -->
+      	<form id="add_customer" method="post" action="/agent_ksf/add_customer" enctype="multipart/form-data" onsubmit="return check_email()">
+      		{% csrf_token %}
+			<div class="modal fade" id="Add-Customer-Model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLongTitle">Add Customer</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+			      	<h4 style="font-weight: bold; text-align: center;">Office Use Only</h4>
+			      	<hr>
+
+			      	<div class="form-group">
+			      		<label for="branch_name">Branch Name<span style="color: red;"> *</span></label>
+			      		<input type="text" name="branch_name" id="branch_name" class="form-control" placeholder="Branch Name" required="">
+			      	</div>
+			      	<div class="form-group show_account_no" style="display: none;">
+			      		<label for="account_no">Account No</label>
+			      		<input type="text" name="account_no" id="account_no" class="form-control" placeholder="Account Number" required="" disabled="" >
+			      		
+			      	</div>
+			      	<div class="form-group show_customer_no" style="display: none;">
+			      		<label for="customer_no">Customer No</label>
+			      		<input type="text" name="customer_no" id="customer_no" class="form-control" placeholder="Customer Number" required="" disabled="" >
+			      	</div>
+			      	<div class="form-group">
+			      		<label>Account Operter<span style="color: red;"> *</span></label>
+			      		<select name="account_operter" id="account_operter" class="form-control" onchange="check_operter()" required="">
+			      			<option value="">Select Account Operter</option>
+			      			<option value="single">Single</option>
+			      			<option value="join">Join</option>
+			      		</select>
+			      	</div>
+			      	<hr>
+               			<h4 style="font-weight: bold; text-align: center;">Customer Personal Details</h4>
+               			<hr>
+               			<div class="form-group">
+               			<input type="hidden" name="customer_id" id="customer_id">
+			      		<label for="full_name">Full Name<span style="color: red;"> *</span></label>
+			      		<input type="text"class="form-control" name="full_name" id="full_name" placeholder="Enter Full Name" required="">
+			      	</div>
+			       	<div class="form-group">
+					    <label for="email_address">Email address<span style="color: red;"> *</span></label>
+					    <input type="email" class="form-control" name="email_address" id="email_address" aria-describedby="error_email" placeholder="Enter Email Address" required="">
+					    <small id="error_email" class="form-text text-muted" style="font-weight: bold; display: none;">
+					    	<span style="color: red;"> This Email Already Existes..</span></small>
+					</div>
+					<div class="form-group">
+						<label for='phone_number'>Customer Phone Number<span style="color: red;"> *</span></label>
+						<input type="text" pattern="[6-9]{1}[0-9]{9,10}" class="form-control" name="phone_number" id="phone_number" placeholder="Enter Customer Contact Number" required="">
+					</div>
+					<div class="form-group">
+						<label>Customer Gender<span style="color: red;"> *</span></label>
+						<br>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input" type="radio" name="customer_gender" id="customer_gender_male" value="male" checked="" required="">
+						  <label class="form-check-label" for="customer_gender_male">Male</label>
+						</div>
+						<div class="form-check form-check-inline">
+						  <input class="form-check-input" type="radio" name="customer_gender" id="customer_gender_female" value="female" required="">
+						  <label class="form-check-label" for="customer_gender_female">Female</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>Customer Date Of Birth<span style="color: red;"> *</span></label>
+						<div class='input-group date' id='datetimepicker1'>
+              <input type='text' class="form-control" name="customer_dob" id="customer_dob" required/>
+              <span class="input-group-addon input-group-append" >
+                <button class="btn btn-outline-primary" type="button" id="button-addon2"> <span class="fa fa-calendar"></span></button>
+              </span>
+            </div>
+						<!-- <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                        <input type="text" name="customer_dob" id="customer_dob" class="form-control  datetimepicker-input" data-target="#reservationdate" required="" />
+                        <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div> 
+                    </div> -->
+					</div>
+					<div class="form-group">
+						<label>Maiden Name(Mother Name)<span style="color: red;"> *</span></label>
+						<input type="txet" name="maiden_name" id="maiden_name" class="form-control" placeholder="Maiden Name(Mother Name)" required="">
+					</div>
+
+					<div class="form-group">
+						<label>Joint Holder Name(If Required)</label>
+						<input type="text" name="joint_holder_name" id="joint_holder_name" class="form-control" placeholder="Joint Holder Name">
+					</div>
+
+					<div class="form-group">
+						<label for='residential_address'>Customer Residential Address<span style="color: red;"> *</span></label>
+						<textarea id="residential_address" class="form-control" name="residential_address" placeholder="Customer Residential Address" rows="4" required=""></textarea>
+					</div>
+					<div class="form-group">
+						<input type="checkbox" id="copy_address" onchange="copy_address1()"> <label class="form-check-label">&nbsp;Copy Above Address</label><br>
+						<label for='permenant_address'>Customer Permenant Address<span style="color: red;"> *</span></label>
+						<textarea id="permenant_address" class="form-control" name="permenant_address" placeholder="Customer Permenant Address" rows="4" required=""></textarea>
+					</div>
+					<div class="form-group">
+						<label>Religion<span style="color: red;"> *</span></label>
+						<input type="text" name="religion" id="religion" class="form-control" placeholder="Religion" required="">
+					</div>
+					<div class="form-group">
+						<label>Cast<span style="color: red;"> *</span></label>
+						<input type="text" name="cast" id="cast" class="form-control" placeholder="Cast" required="">
+					</div>
+					<div class="form-group">
+						<label>Account Type<span style="color: red;"> *</span></label>
+						<select class="form-control" id="account_type" name="account_type" required="">
+							<option value="">Select Account Type</option>
+			      			<option value="saving">Saving</option>
+			      			<option value="current">Current</option>
+						</select>
+					</div>
+					<div class="form-group">
+			      		<label>Education<span style="color: red;"> *</span></label>
+			      		<select name="education" id="education" class="form-control" required="">
+			      			<option value="">Select Education</option>
+			      			<option value="Non-SSC">Non-SSC</option>
+			      			<option value="SSC/HSC">SSC/HSC</option>
+			      			<option value="Undergraduate">Undergraduate</option>
+			      			<option value="Graduate">Graduate</option>
+			      			<option value="Post-Graduate">Post Graduate</option>
+			      		</select>
+			      	</div>
+			      	<div class="form-group">
+			      		<label>Occupation<span style="color: red;"> *</span></label>
+			      		<select name="occupation" id="occupation" class="form-control" onchange="occupation_box()" required=""> <!-- onchange="occupation_box()" -->
+			      			<option value="">Select Occupation</option>
+			      			<option value="Student">Student</option>
+			      			<option value="House-Wife">House Wife</option>
+			      			<option value="Salaried">Salaried</option>
+			      			<option value="Self Employed/Professional">Self Employed/Professional</option>
+			      			<option value="Business">Business</option>
+			      			<option value="retired">retired</option>
+			      			<option value="Farmer">Farmer</option>
+			      			<option value="other">other</option>
+			      		</select>
+			      	</div>
+			      		<input type="text" name="other_occupation" id="other_occupation" class="form-control" placeholder="Other Occupation" style="display: none;">
+
+			      	<div class="form-group">
+			      		<label>Maratal Status<span style="color: red;"> *</span></label>
+			      		<select name="maratal_status" id="maratal_status" class="form-control" required="">
+			      			<option value="">Select Maratal Status</option>
+			      			<option value="single">Single</option>
+			      			<option value="married">Married</option>
+			      		</select>
+			      	</div>
+			      	<div class="form-group">
+						<label for="customer_photo">Customer Photo<span style="color: red;"> *</span></label>
+						<input type="file" name="customer_photo" id="customer_photo" class="form-control-file" accept="image/*" required="">
+					</div>
+					<div class="form-group" id="customer_photo_div" style="display: none;">
+						<img src="" class="img-thumbnail mx-2" alt="customer_photo" id="customer_photo_view" height="100px" width="100px">
+						<img src="" class="img-thumbnail mx-2" alt="customer_sign_image" id="customer_sign_image_view" height="100px" width="100px">
+					</div>
+					<div class="form-group">
+						<label for="customer_photo">Customer Sign Photo<span style="color: red;"> *</span></label>
+						<input type="file" name="customer_sign_image" id="customer_sign_image" class="form-control-file" accept="image/*" required="">
+					</div>
+					<div class="form-group">
+						<label>Aadharcard Number<span style="color: red;"> *</span></label>
+						<input type="text" name="customer_aadharcard_no" id="customer_aadharcard_no" class="form-control" placeholder="Customer Aadharcard No" required="">
+					</div>
+					<div class="form-group">
+						<label>Pancard Number<span style="color: red;"> *</span></label>
+						<input type="text" pattern="[a-zA-Z]{3}[PCHFATBLJG]{1}[a-zA-Z]{1}[0-9]{4}[a-zA-Z]{1}" name="customer_pancard_no" id="customer_pancard_no" class="form-control" placeholder="Customer Pancard No" required="">
+					</div>
+					<div class="form-group">
+						<label for="customer_aadharcard">Customer AadharCard<span style="color: red;"> *</span></label>
+						<input type="file" name="customer_aadharcard" id="customer_aadharcard" class="form-control-file" accept="image/*" required="">
+					</div>
+					<div class="form-group" id="customer_identity_div" style="display: none;" >
+						<img src="" class="img-thumbnail mx-2" alt="customer_aadharcard" id="customer_aadharcard_view" height="100px" width="100px">
+						<img src="" class="img-thumbnail mx-2" alt="customer_pancard" id="customer_pancard_view" height="100px" width="100px">
+					</div>
+					<div class="form-group">
+						<label for="customer_pancard">Customer PanCard<span style="color: red;"> *</span></label>
+						<input type="file" name="customer_pancard" id="customer_pancard" class="form-control-file" accept="image/*" required="">
+					</div>
+
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="submit" class="btn btn-primary">Save changes</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</form>
+
+    </div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	// <!------- Datatable script start ------>
+	$(function () {
+		$("#datatable-basic").DataTable({
+	      "responsive": false,
+	      // 1"responsive": true,
+	      "autoWidth": false,
+	      "ordering": false,
+	      "bPaginate": true,
+	      // "order": [[ 3, "desc" ]]
+   		});
+    });
+// <!------- Datatable script End ------>
+
+// <!---------- Datepicker start -------------->
+    $('#datetimepicker1').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate: moment().subtract(80, "years"),
+        maxDate: moment().subtract(18, "years"),
+        icons: {
+          date: "fa fa-calendar-day",
+          up: "fa fa-chevron-up",
+          down: "fa fa-chevron-down",
+          previous: 'fa fa-chevron-left',
+          next: 'fa fa-chevron-right',
+          today: 'fa fa-screenshot',
+          clear: 'fa fa-trash',
+          close: 'fa fa-remove'
+        }
+    });
+// <!---------- Datepicker End -------------->
+
+// <!------- Insert Show Customer Photo START ----->
+        function readURL_customer_photo(input) {
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#customer_photo_view').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#customer_photo").on('change',function(){
+        	$("#customer_photo_div").css('display','block');
+            readURL_customer_photo(this);
+        });
+// <!------- Insert Show Customer Photo END ----->
+
+// <!------- Insert Show Customer aadharcard START ----->
+        function readURL_customer_aadhar(input) {
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#customer_aadharcard_view').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#customer_aadharcard").on('change',function(){
+        	$("#customer_identity_div").css('display','block');
+            readURL_customer_aadhar(this);
+
+        });
+// <!------- Insert Show Customer aadharcard END ----->
+
+// <!------- Insert Show Customer pancard START ----->
+        function readURL_customer_pan(input) {
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#customer_pancard_view').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#customer_pancard").on('change',function(){
+            readURL_customer_pan(this);
+
+        });
+// <!------- Insert Show Customer pancard END ----->
+
+// <!------- Insert Show Customer pancard START ----->
+        function readURL_customer_sign(input) {
+            
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#customer_sign_image_view').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#customer_sign_image").on('change',function(){
+            readURL_customer_sign(this);
+
+        });
+// <!------- Insert Show Customer pancard END -----> 
+
+// <!---------- check customer Operated value Start --------------->
+	function check_operter() {
+		// body...
+		var operter = $("#account_operter").val()
+		console.log(operter)
+		if(operter == 'join'){
+			$("#joint_holder_name").attr("required", "true");
+		}
+		else{
+			$("#joint_holder_name").removeAttr('required');
+		}
+	}
+// <!---------- check customer Operated value end --------------->
+
+// <!---------- copy address fucation start -------------->
+	function copy_address1() {
+		// body...
+		var address = $("#residential_address").val();
+		$("#permenant_address").val(address);
+	}
+// <!---------- copy address fucation end -------------->
+
+// <!---------other occupation time open box start ------------>
+	function occupation_box() {
+		// body...
+		var select_value = $("#occupation").val()
+		if(select_value == 'other'){
+			$('#other_occupation').show();
+			// $('#other_occupation').css('display','block');
+		}
+		else{
+			 $('#other_occupation').css('display','none');
+		}
+	}
+// <!---------other occupation time open box end ------------>
+
+// <!------- Update data using Ajax START ----------->
+        function Edit_Customer(customer_id) {
+        	console.log(customer_id)
+            if (customer_id) { 
+        		$.ajax({
+        			url: '/agent_ksf/get_customer',
+		            type:'POST',
+		            headers:{
+						'X-CSRFToken': csrftoken,
+					},
+		            data: { 'customer_id':customer_id},
+		            dataType: 'json',
+		            async:false,
+		            success: function (data) {
+		            	console.log(data)
+		            	$("#branch_name").val(data['branch_name'])
+		            	$("#account_no").prop('readonly', true);
+		            	$(".show_account_no").show();
+		            	$("#account_no").val(data['account_no'])
+		            	$("#account_operter").val(data['account_operter'])
+		            	$("#account_type").val(data['account_type'])
+		            	$("#cast").val(data['cast'])
+		            	$("#residential_address").val(data['residential_address'])
+		            	$("#customer_aadharcard_no").val(data['customer_aadharcard_no'])
+		            	$("#phone_number").val(data['customer_contact_no'])
+		            	$("#customer_dob").val(data['customer_dob'])
+		            	$("#email_address").val(data['customer_email'])
+		            	$('input:radio[value='+data['customer_gender']+']').prop('checked', true);
+		            	$("#customer_id").val(data['customer_id'])
+		            	$("#customer_no").prop('readonly', true);
+		            	$(".show_customer_no").show();
+		            	$("#customer_no").val(data['customer_no'])
+		            	$("#customer_pancard_no").val(data['customer_pancard_no'])
+		            	$("#education").val(data['education'])
+		            	$("#full_name").val(data['full_name'])
+		            	$("#joint_holder_name").val(data['joint_holder_name'])
+		            	$("#maiden_name").val(data['maiden_name'])
+		            	$("#maratal_status").val(data['marial_status'])
+		            	$("#marial_status").val(data['marial_status'])
+		            	$("#occupation").val(data['occupation'])
+		            	if(data['occupation'] == "other"){
+		            	$("#other_occupation").show();
+		            	$("#other_occupation").val(data['other_occupation'])
+		            	}
+		            	else{
+		            		$("#other_occupation").hide();
+		            	}
+		            	$("#permenant_address").val(data['permenant_address'])
+		            	$("#religion").val(data['religion'])
+		            	$("#customer_aadharcard_view").attr('src', '/media/'+data['customer_aadharcard_image'])
+		            	$("#customer_sign_image_view").attr('src', '/media/'+data['customer_sign_image'])
+		            	$("#customer_aadharcard").removeAttr('required')
+		            	$("#customer_sign_image").removeAttr('required')
+
+		            	$("#customer_pancard_view").attr('src','/media/'+data['customer_pancard_image'])
+		            	$("#customer_pancard").removeAttr('required')
+		            	$("#customer_photo_view").attr('src','/media/'+data['customer_profile_photo'])
+		            	$("#customer_photo").removeAttr('required')
+		            	$("#customer_photo_div").css('display','block');
+		            	$("#customer_identity_div").css('display','block');
+		            	$('#Add-Customer-Model').modal('show');
+		            }
+        		})
+            }
+        }
+// <!------ Update data using Ajax END ------------>
+
+// <!----------- Clear Edit Agent Form using jquery START ----------------->
+$('#Add-Customer-Model').on('hidden.bs.modal', function(e)
+    { 	
+    	$("#add_customer")[0].reset();
+    	// $(this).removeData();
+        // $(this).removeData('bs.modal').find(".modal-dialog").empty();
+    }) ;
+// <!----------- Clear Edit Agent Form using jquery END ----------------->
+
+// <!------------ Check Email is Existing START---------------->
+
+	function check_email() {
+          // body...
+          var customer_id = $('#customer_id').val()
+          console.log(customer_id)
+          if ( customer_id != '' && customer_id != undefined){
+          	data ={'customer_id':$('#customer_id').val(),'email_address': $('#email_address').val()}
+          }
+          else{
+          	data ={'email_address': $('#email_address').val()}
+          	// ,'customer_no': $('#customer_no').val(),'account_no': $('#account_no').val()
+          }
+          console.log(data)
+          var return_value = false;
+          $.ajax({
+            url: '/agent_ksf/customer_check_email',
+            type:'POST',
+            headers:{
+				'X-CSRFToken': csrftoken,
+			},
+            data: data,
+            dataType: 'json',
+            async:false,
+            success: function (data) {
+            	console.log(data)
+              if(data == true){
+                return_value = true
+              }
+              else{
+              	$.notiny({ text: 'This Email Already Existes.', position: 'right-top'});
+                $('.notiny-theme-dark').css('background-color','red')
+                $('.notiny-theme-dark').css('font-weight','20px')
+                $('#error_email').css('display','block');
+                return_value = false
+              }
+            }
+          })
+        return return_value
+        }
+// <!------------ Check Email is Existing END---------------->
+
+// <!-- Delete data using Ajax START -->
+        function Delete_Customer(customer_id) {
+            if (customer_id) {
+                $('#delete_customer_id').val(customer_id);
+            }
+        }
+        $("form#delete_customer").submit(function() {
+            var delete_customer_id = $("#delete_customer_id").val();
+            console.log(delete_customer_id)
+            if (delete_customer_id) {
+                $.ajax({
+                    url: '/agent_ksf/delete_customer',
+                    type:'POST',
+                    headers:{
+						'X-CSRFToken': csrftoken,
+					},
+                    data: {
+                        'delete_customer_id': delete_customer_id,
+                    },
+                    dataType: 'json',
+                    success: function () {
+                        window.open('{% url "agent_customer_list" %}', '_self');
+                    }
+                })
+            } else {
+                alert("Fields must have a valid value.");
+            }
+            $('form#delete_customer').trigger("reset");
+            return false;
+        });
+// <!-- Delete data using Ajax END -->
+</script>
+{% endblock %}

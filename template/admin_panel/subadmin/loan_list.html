@@ -1,0 +1,369 @@
+{% extends 'admin_panel/subadmin/base.html' %}
+
+{% block title %}
+<title>Loan List</title>
+{% endblock %}
+
+{% block body %}
+<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+	      <div class="container-fluid">
+	        <div class="row mb-2">
+	          <div class="col-sm-6">
+	            <h1 class="m-0 text-dark">Loan</h1>
+	          </div>
+	          <div class="col-sm-6">
+	            <ol class="breadcrumb float-sm-right">
+	              <li class="breadcrumb-item"><a href="/admin_ksf/dashboard">Home</a></li>
+	              <li class="breadcrumb-item active">Loan</li>
+	            </ol>
+	          </div>
+	        </div>
+	      </div>
+	    </section>
+
+	     <!-- Main content -->
+	    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header" style="background-color: #007bff; color:white;">
+                <h3 class="card-title">Loan List</h3>
+              </div>
+              <div>
+                {% if messages %}
+		          {% for message in messages %}
+				    <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert">
+				        <strong>Message:</strong> {{ message }}
+				        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				            <span aria-hidden="true">&times;</span>
+				        </button>
+				    </div>
+				    {% endfor %}
+		      {% endif %}
+		      </div>
+
+		      <!-- /.card-header -->
+              <div class="card-body">
+              		<div>
+                		<button type="button" class="btn btn-primary float-right" onclick="Get_CustomerList()">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                    Add Loan
+                                </button>
+                	</div>
+                	<br>
+                	<br>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-striped" id="example1">
+                  <thead>
+                    <tr>
+                      <th>Profile Photo</th>
+                      <th>Full Name</th>
+                      <th>Email</th>
+                      <th>Contact No</th>
+                      <th>Gender</th>
+                      <th>Date Of Birth</th>
+                      <th>Maiden Name</th>
+                      <th>Religion</th>
+                      <th>Cast</th>
+                      <th>Education</th>
+                      <th>Occupation</th>
+                      <th>Marial Status</th>
+                      <th>Permanent Address</th>
+                      <th>Signature</th>
+                      <th>Aadhar Card Number</th>
+                      <th>Aadhar Card Photo</th>
+                      <th>Pan Card Number</th>
+                      <th>Pan Card Photo</th>
+                      <th>Account Type</th>
+                      <th>Branch Name</th>
+                      <th>Account No.</th>
+                      <th>Loan No.</th>
+                      <th>Account Operated</th>
+                      <th>Join Holder Name</th>
+                      <th>Create Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {% if customer_list %}
+                      {% for customer in customer_list %}
+                        <tr id="customer-{{customer.customer_id}}">
+                          <td>
+                          	{% if customer.customer_profile_photo %}
+                          		<center>
+                            		<img src="/media/{{ customer.customer_profile_photo }}" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% else %}
+                          		<center>
+                            		<img src="/media/customer_profile/no_customer_image.png" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% endif %}
+                          </td>
+                          <td>{{ customer.full_name }}</td>
+                          <td>{{ customer.customer_email }}</td>
+                          <td>{{ customer.customer_contact_no }}</td>
+                          <td>{{ customer.customer_gender }}</td>
+                          <td>{{ customer.customer_dob }}</td>
+                          <td>{{ customer.maiden_name }}</td>
+                          <td>{{ customer.religion }}</td>
+                          <td>{{ customer.cast }}</td>
+                          <td>{{ customer.education }}</td>
+                          {% if 'other' == customer.occupation %}
+                          	<td>{{ customer.other_occupation }}</td>
+                          {% else %}
+                          	<td>{{ customer.occupation }}</td>
+                          {% endif %}
+                          <td>{{ customer.marial_status }}</td>
+                          <td>{{ customer.permenant_address }}</td>
+                          <td>
+                          	{% if customer.customer_sign_image %}
+                          		<center>
+                            		<img src="/media/{{ customer.customer_sign_image }}" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% else %}
+                          		<center>
+                            		<img src="/media/customer_profile/no_customer_image.png" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% endif %}
+                          </td>
+                          <td>{{ customer.customer_aadharcard_no }}</td>
+                          <td>
+                          	{% if customer.customer_aadharcard_image %}
+                          		<center>
+                            		<img src="/media/{{ customer.customer_aadharcard_image }}" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% else %}
+                          		<center>
+                            		<img src="/media/customer_profile/no_customer_image.png" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% endif %}
+                          </td>
+                          <td>{{ customer.customer_pancard_no }}</td>
+                          <td>
+                          	{% if customer.customer_pancard_image %}
+                          		<center>
+                            		<img src="/media/{{ customer.customer_pancard_image }}" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% else %}
+                          		<center>
+                            		<img src="/media/customer_profile/no_customer_image.png" alt="not found!" class="responsive" width="60" height="60" >
+                            	</center>
+                          	{% endif %}
+                          </td>
+                          <td>{{ customer.account_type }}</td>
+                          <td>{{ customer.branch_name }}</td>
+                          <td>{{ customer.account_no }}</td>
+                          <td>{{ customer.customer_no }}</td>
+                          <td>{{ customer.account_operter }}</td>
+                          <td>{{ customer.joint_holder_name }}</td>
+                          <td>{{ customer.create_date }}</td>
+                          <td>
+                          	<center>
+                          		<!-- <button type="submit" class="btn" onClick="Edit_Agent({{ Agent.Agent_id }})"data-toggle="modal" data-target="#update_">
+                                    <i class="fa fa-eye"></i>
+                                </button> -->
+                                <button type="submit" class="btn btn-primary" onClick="Edit_Loan({{ customer.customer_id }})"> <!-- data-toggle="modal" data-target="#Edit-Agent-Model" -->
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button type="submit" class="btn btn-danger" onClick="Delete_Loan({{ customer.customer_id }})"data-toggle="modal" data-target="#Delete-Loan-Model">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                          	</center>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    {% endif %}
+                  </tbody>
+                </table><br>
+                </div>
+              </div>
+		  </div>
+		</div>
+	</div>
+</div>
+<!--add Loan Modal start -->
+      	<form id="add_loan" method="post" action="/admin_ksf/add_loan" enctype="multipart/form-data" onsubmit="return check_email()">
+      		{% csrf_token %}
+			<div class="modal fade" id="Add-Loan-Model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+			  <div class="modal-dialog" role="document">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="exampleModalLongTitle">Add Loan</h5>
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			          <span aria-hidden="true">&times;</span>
+			        </button>
+			      </div>
+			      <div class="modal-body">
+              <div class="form-group">
+                <label for="loan_type_id">Loan Type<span style="color: red;"> *</span></label>
+                <select id="loan_type_id" name="loan_type_id" class="form-control">
+                  <option>Seletct Loan Type</option>
+                </select>
+              </div>
+
+			      	<div class="form-group">
+			      		<label for="branch_name">Customer Name<span style="color: red;"> *</span></label>
+			      		<select id="customer_name" name="customer_name" class="form-control">
+			      			<option>Seletct Customer</option>
+			      		</select>
+			      	</div>
+
+              <div class="form-group">
+                <label for="loan_cost">Loan Cost<span style="color: red;"> *</span></label>
+                <input type="text" name="loan_cost" id="loan_cost" class="form-control" placeholder="Enter Total Loan Cost">
+              </div>
+
+              <div class="form-group">
+                <label for="loan_interst">Loan Interst<span style="color: red;"> *</span></label>
+                <input type="text" name="loan_interst" id="loan_interst" class="form-control" placeholder="Enter Loan Interst">
+              </div>
+
+              <div class="form-group">
+                <label for="loan_year">Loan Year<span style="color: red;"> *</span></label>
+                <input type="text" name="loan_year" id="loan_year" class="form-control" placeholder="Please Enter Total Loan Year In Month">
+              </div>
+
+              <div class="form-group">
+                <label for="last_3year_income">Last 3-Year Income<span style="color: red;"> *</span></label>
+                <div class="custom-file">
+                  <input type="file" name="last_3year_income" id="last_3year_income" class="custom-file-input">
+                  <label class="custom-file-label" for="nominees1_sign">Choose file</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="loan_document">Loan Document<span style="color: red;"> *</span></label>
+                <div class="custom-file">
+                  <input type="file" name="loan_document" id="loan_document" class="custom-file-input">
+                  <label class="custom-file-label" for="nominees1_sign">Choose file</label>
+                </div>
+              </div>
+
+              <hr>
+              <div class="form-group">
+                <label for="nominees1_name">Nominees1 Name<span style="color: red;"> *</span></label>
+                <input type="text" name="nominees1_name" id="nominees1_name" class="form-control" placeholder="Enter Nominees1 Name">
+              </div>
+              <div class="form-group">
+                <label for="nominees1_photo">Nominees1 Photo<span style="color: red;"> *</span></label>
+                <div class="custom-file">
+                  <input type="file" name="nominees1_photo" id="nominees1_photo" class="custom-file-input">
+                  <label class="custom-file-label" for="nominees1_photo">Choose file</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nominees1_proof">Nominees1 Proof<span style="color: red;"> *</span></label>
+                <div class="custom-file">
+                  <input type="file" name="nominees1_proof" id="nominees1_proof" class="custom-file-input">
+                  <label class="custom-file-label" for="nominees1_proof">Choose file</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nominees1_sign">Nominees1 Sign<span style="color: red;"> *</span></label>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="nominees1_sign" id="nominees1_sign">
+                  <label class="custom-file-label" for="nominees1_sign">Choose file</label>
+                </div>
+              </div>
+
+              <hr>
+              <div class="form-group">
+                <label for="nominees2_name">Nominees2 Name<span style="color: red;"> *</span></label>
+                <input type="text" name="nominees2_name" id="nominees2_name" class="form-control"  placeholder="Enter Nominees2 Name">
+              </div>
+              <div class="form-group">
+                <label for="nominees2_photo">Nominees2 Photo<span style="color: red;"> *</span></label>
+                <div class="custom-file">
+                  <input type="file" name="nominees2_photo" id="nominees2_photo" class="custom-file-input">
+                  <label class="custom-file-label" for="nominees2_photo">Choose file</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nominees2_proof">Nominees2 Proof<span style="color: red;"> *</span></label>
+                <div class="custom-file">
+                  <input type="file" name="nominees2_proof" id="nominees2_proof" class="custom-file-input">
+                  <label class="custom-file-label" for="nominees2_proof">Choose file</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="nominees2_sign">Nominees2 Sign<span style="color: red;"> *</span></label>
+                <div class="custom-file">
+                  <input type="file" name="nominees2_sign" id="nominees2_sign" class="custom-file-input">
+                  <label class="custom-file-label" for="nominees2_sign">Choose file</label>
+                </div>
+              </div>
+
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button type="submit" class="btn btn-primary">Save changes</button>
+			      </div>
+			    </div>
+			  </div>
+			</div>
+		</form>
+</section>
+	</div>
+{% endblock %}
+
+
+{% block jquery %}
+<script type="text/javascript">
+  $(document).ready(function () {
+  bsCustomFileInput.init();
+});
+	function Get_CustomerList() {
+		// body...
+		$.ajax({
+			url: '/admin_ksf/get_customer_loan',
+			type:'POST',
+			headers:{
+				'X-CSRFToken': csrftoken,
+			},
+			// data: form_data,
+			dataType: 'json',
+			// cache : false,
+			// processData: false,
+			// contentType: false,
+			async:false,
+			success: function (data) {
+        console.log(data['customer_list'])
+        console.log(data['customer_list'].length)
+        console.log(data['loan_type_list'])
+        console.log(data['loan_type_list'].length)
+
+				$('#loan_type_id').empty();
+				$("#loan_type_id").append('<option value="">Select Loan Type</option>')
+        for(var j=0; j<data['loan_type_list'].length; j++){
+          $('#loan_type_id').append('<option value="'+data['loan_type_list'][j]['loan_type_id']+'">'+data['loan_type_list'][j]['loan_type_name']+'</option>')
+        }
+
+        $('#customer_name').empty();
+        $("#customer_name").append('<option value="">Select Customer</option>')
+				for(var i=0;i<data['customer_list'].length;i++){
+					$("#customer_name").append('<option value="'+data['customer_list'][i]['customer_id']+'">'+data['customer_list'][i]['full_name']+' - '+data['customer_list'][i]['account_no']+'</option>')
+				}
+				$("#Add-Loan-Model").modal('show')
+			},
+		    beforeSend: function(){
+		        // swal('Please Wait !','Data Uploading..');
+		        Swal.fire({
+				  title: "Checking...",
+				  text: "Please wait",
+				  imageUrl: "/static/admin_panel/dist/img/AdorableMajesticJellyfish-max-14mb.gif",
+				  showConfirmButton: false,
+				  allowOutsideClick: false
+				});
+		    },
+		    complete: function(){
+		        swal.close()
+		    }
+		});
+	}
+</script>
+{% endblock %}

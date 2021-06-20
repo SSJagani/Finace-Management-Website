@@ -1,0 +1,77 @@
+{% extends 'admin_panel/subadmin/base.html' %}
+{% load static %}
+
+{% block title %}
+<title> Deshboard </title>
+{% endblock %}
+
+{% block body %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Dashboard</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="/admin_ksf/dashboard">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+              <div class="inner">
+                {% if agents.count != '' %}
+                 	<h3>{{ agents.count }}</h3>
+                {% else %}
+                  <h3>0</h3>
+                {% endif %}
+                <p>Total Agents</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-user-secret"></i>
+              </div>
+              <a href="" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+
+           <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+              <div class="inner">
+                {% if customer.count != '' %}
+                  <h3>{{ customer.count }}</h3>
+                {% else %}
+                  <h3>0</h3>
+                {% endif %}
+                <p>Total Customer</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <a href="" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </div>
+<!-- /.content-wrapper -->
+{% endblock %}
+
+{% block jquery %}
+
+{% endblock %}
