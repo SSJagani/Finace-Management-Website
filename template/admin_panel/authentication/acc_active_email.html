@@ -1,0 +1,12 @@
+{% autoescape off %}
+
+    Hi {{ user.full_name }},
+
+    Email Address: {{user.email_address}}
+    Password: {{password}}
+
+    Please click on the link to confirm your registration,
+    http://{{ domain }}{% url 'agent_activate' uidb64=uid token=token %}
+    If you think, it's not you, then just ignore this email.
+
+{% endautoescape %}

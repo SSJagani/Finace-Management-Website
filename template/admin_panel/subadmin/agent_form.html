@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Agent From</title>
+	<style>
+    .agent_form {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        font-size: 16px;
+        line-height: 24px;
+        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        color: #555;
+    }
+    
+    .agent_form table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+    }
+    
+    .agent_form table td {
+        padding: 5px;
+        /*vertical-align: top;*/
+    }
+    
+    .agent_form table tr td:nth-child(2) {
+        text-align: center;
+    }
+    .agent_form table tr td.item_second_td {
+        text-align: left;
+    }
+    
+    .agent_form table tr.top table td {
+        padding-bottom: 20px;
+    }
+    
+    .agent_form table tr.top table td.title {
+        font-size: 45px;
+        line-height: 45px;
+        color: #333;
+    }
+    
+    .agent_form table tr.information table td {
+        /*padding-bottom: 40px;*/
+    }
+    
+/*    .agent_form table tr.heading td {
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+    }
+    
+    .agent_form table tr.details td {
+        padding-bottom: 20px;
+    }*/
+    
+    .agent_form table tr.item1 td{
+    	border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+    }    
+    .agent_form table tr.item td{
+    	width: 25px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    /*.agent_form table tr.item.last td {
+        border-bottom: none;
+    }*/
+    
+   /* .agent_form table tr.total td:nth-child(2) {
+        border-top: 2px solid #eee;
+        font-weight: bold;
+    }*/
+    
+    @media only screen and (max-width: 600px) {
+        .agent_form table tr.top table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+        
+        .agent_form table tr.information table td {
+            width: 100%;
+            display: block;
+           /* text-align: center;*/
+        }
+    }
+    
+    /** RTL **/
+    .rtl {
+        direction: rtl;
+        font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+    
+    .rtl table {
+        text-align: right;
+    }
+    
+    .rtl table tr td:nth-child(2) {
+        text-align: left;
+    }
+    </style>
+</head>
+<body>
+	<div class="agent_form">
+		{% if agents %}
+		 <table cellpadding="0" cellspacing="0">
+		 	 <tr class="top">
+		 	 	<td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img src="https://banner2.cleanpng.com/20180707/ott/kisspng-home-first-finance-company-mortgage-loan-business-5b411dbccd6636.2760784715309941088413.jpg" style="width:100%; max-width:100px;">
+                            </td>
+                            
+                            <td>
+                        		<h3>Kunal Soft Finance Pvt.Ltd.</h3>
+                        		<hr>
+                        		<h6 style="padding: 0px; margin: 0px;">This is our company address and email</h6>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+		 	 </tr>
+		 	 <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>
+                                <b>Date Ragisration: </b>{{agents.create_date|date:"d-m-Y"}}
+                                <br>
+                                <b>Agent Number: </b><span style="color: #0037ff;font-weight: bold;"> {{agents.agent_no}}</span>
+                            </td>
+                            
+                            <td>
+                               <img src="/media/{{agents.profile_photo}}" style="width:100%; max-width:100px;">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr class="item1">
+                <td>
+                    <b>Agent Full Name :</b> 
+                </td>
+                <td class="item_second_td">{{ agents.full_name}}</td>
+            </tr>
+            <tr class="item">
+                <td>
+                    <b>Agent Date Of Birth :</b> 
+                </td>
+                <td class="item_second_td">
+                	{{agents.agent_dob |date:"d-m-Y"}}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    <b>Agent Phone Number :</b> 
+                </td>
+                <td class="item_second_td">
+                	{{ agents.agent_contact_no }}
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    <b>Agent Email Address :</b> 
+                </td>
+                <td class="item_second_td">{{ agents.email_address }}</td>
+            </tr>
+            <tr class="item">
+                <td>
+                    <b>Agent Address :</b>
+                </td>
+                <td class="item_second_td"><address>
+                	<span style="text-align: left;">{{ agents.agent_address }}
+                    </span>
+                    </address>
+                </td>
+            </tr>
+            <tr class="item">
+                <td>
+                    <b>Agent Documnet :</b>
+                </td>
+                <td class="item_second_td">
+                	<img src="/media/{{ agents.identity_doc }}" style="width:100%; max-width:300px;">
+                </td>
+            </tr>
+            <!-- user class items.last remove bottum boder -->
+            {% endif %}
+		 </table>
+	</div>

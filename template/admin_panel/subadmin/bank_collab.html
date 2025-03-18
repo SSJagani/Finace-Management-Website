@@ -1,0 +1,130 @@
+{% extends 'admin_panel/subadmin/base.html' %}
+
+{% block title %}
+<title>Bank Collab List</title>
+{% endblock %}
+
+{% block body %}
+	
+<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0 text-dark">Bank Collab Details</h1>
+						</div>
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item"><a href="/admin_ksf/dashboard">Home</a></li>
+								<li class="breadcrumb-item active">Bank Collab</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			 <!-- Main content -->
+			<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-header" style="background-color: #007bff; color:white;">
+								<h3 class="card-title">Bank Collab List</h3>
+							</div>
+							<div>
+								{% if messages %}
+							{% for message in messages %}
+						<div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-0" role="alert">
+								<strong>Message:</strong> {{ message }}
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+								</button>
+						</div>
+						{% endfor %}
+					{% endif %}
+					</div>
+
+					<!-- /.card-header -->
+							<div class="card-body">
+																	<div>
+										<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#Add-Customer-Model">
+																		<i class="fa fa-plus" aria-hidden="true"></i>
+																		Add Bank Collab
+																</button>
+									</div>
+									<br>
+									<br>
+								<div class="table-responsive">
+									<table class="table table-bordered table-striped" id="example1"  data-url="{% url 'data_json' %}">
+									<thead>
+										<tr>
+											<th>Bank Name</th>
+											<th>Bank Address</th>
+											<th>Bank Logo</th>
+											<th>Bank Uid</th>
+											<th>Action</th>
+											<th>Bank Uid</th>
+											<th>Action</th> 
+										</tr>
+									</thead>
+
+									
+								</table><br>
+								</div>
+							</div>
+
+
+			</div>
+		</div>
+	</div>
+</div>
+</section>
+	</div>
+{% endblock %}
+
+
+{% block jquery %}
+<script type="text/javascript">
+	 $(document).ready(function() {              
+		 $('#example1').dataTable( {  
+					 "processing": true,
+      "serverSide": true,
+      "iTotalRecords": 10000,
+      "info": true,
+        "stateSave": true,
+      "ajax": {
+       "url": "/admin_ksf/data_json",
+       "dataSrc": "qry_customer"
+    },
+      // "ajax": "/admin_ksf/data_json",
+      // "dataSrc": "qry_customer",
+				 "columns": [
+        {"data": "customer_id"},
+        {"data": "full_name"},
+        {"data": "customer_email"},
+        {"data": "customer_contact_no"},
+        {"data": "customer_gender"},
+        {"data": "customer_dob"},
+        {"data": "permenant_address"},
+      ]
+ } );
+})
+// <!------- Datatable script start ------>
+	// $(function () {
+	// 	$("#example1").DataTable({
+	//       "responsive": false,
+	//       // "responsive": true,
+	//       "autoWidth": false,
+	//       "ordering": false,
+	//       // "order": [[ 3, "desc" ]]
+ //   		});
+ //    });
+// <!------- Datatable script End ------>
+
+
+
+</script>
+{% endblock %}
